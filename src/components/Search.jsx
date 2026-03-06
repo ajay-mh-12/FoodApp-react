@@ -1,24 +1,39 @@
+import styles from "./search.module.css";
 import { useState, useEffect } from "react";
-const URL = " https://www.themealdb.com/api/json/v1/1/search.php?s";
-export default function Search({foodData,setFoodData}) {
+export default function Search({ foodData, setFoodData }) {
   const [query, setQuery] = useState("");
+  const [error, setError] = useState("");
   // syntax of the useEffect hook //
   useEffect(() => {
     async function fetchFood() {
-      const res = await fetch(`${URL}`);
-      const data = await res.json();
-      console.log(data.meals)
-      setFoodData(data.meals)
+      try {
+        const res = await fetch(
+          `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`,
+        );
+        const data = await res.json();
+        console.log(data.meals);
+        setFoodData(data.meals)
+
+        if (!data.meals) {
+          setError("food not found");
+          setFoodData([]);
+        } else {
+          setFoodData(data.meals);
+          setError("");
+        }
+      } catch (error) {
+        setError("food not found");
+      }
     }
-    fetchFood()
+    fetchFood();
   }, [query]);
-  function handleClick(e) {
+  function handleChange(e) {
     setQuery(e.target.value);
   }
 
   return (
-    <div>
-      <input onChange={handleClick} type="text" value={query} />
+    <div className={styles.search}>
+      <input onChange={handleChange} type="text" value={query} />
     </div>
   );
 }

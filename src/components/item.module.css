@@ -1,0 +1,11 @@
+.recipeDetails {
+  margin-bottom: 20px;
+}
+.recipeInstruction {
+  padding: 0px;
+  border-radius: 5px;
+  color: #adaab0;
+}
+.instruction {
+  color: black;
+}
